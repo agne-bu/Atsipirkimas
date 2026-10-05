@@ -50,6 +50,8 @@ const galimaKeistiInvesticijas = projektoBusena !== 'Baigta'
 
   function pridetiIrasa(event) {
     event.preventDefault()
+    if (!galimaKeistiInvesticijas) return
+
     const { klaidos: naujosKlaidos, suma } = validuotiForma(forma)
 
     if (naujosKlaidos.length > 0) {
@@ -71,6 +73,8 @@ const galimaKeistiInvesticijas = projektoBusena !== 'Baigta'
   }
 
   function istrintiIrasa(id) {
+    if (!galimaKeistiInvesticijas) return
+
     setIrasai((dabartiniai) => dabartiniai.filter((irasas) => irasas.id !== id))
   }
 
@@ -89,6 +93,7 @@ const galimaKeistiInvesticijas = projektoBusena !== 'Baigta'
             inputMode="numeric"
             placeholder="2026"
             value={forma.metai}
+            disabled={!galimaKeistiInvesticijas}
             onChange={(event) => keistiLauka('metai', event.target.value)}
           />
         </div>
@@ -99,6 +104,7 @@ const galimaKeistiInvesticijas = projektoBusena !== 'Baigta'
             id="investicija-menuo"
             value={forma.menuo}
             onChange={(event) => keistiLauka('menuo', event.target.value)}
+            disabled={!galimaKeistiInvesticijas}
           >
             <option value="">Pasirinkite</option>
             {MENESIAI.map((menuo) => (
@@ -117,6 +123,7 @@ const galimaKeistiInvesticijas = projektoBusena !== 'Baigta'
             inputMode="decimal"
             placeholder="5 000"
             value={forma.suma}
+            disabled={!galimaKeistiInvesticijas}
             onChange={(event) => keistiLauka('suma', event.target.value)}
           />
         </div>
@@ -162,6 +169,7 @@ const galimaKeistiInvesticijas = projektoBusena !== 'Baigta'
                       type="button"
                       className="investicija-istrinti"
                       onClick={() => istrintiIrasa(irasas.id)}
+                      disabled={!galimaKeistiInvesticijas}
                     >
                       Ištrinti
                     </button>
