@@ -10,13 +10,15 @@ Investicijų žurnalas, sukurtas su React ir Vite. Leidžia suvesti investicijas
 - Projekto vykdymo būsena: `Nepradėta`, `Vykdoma`, `Baigta`
 - Duomenų išsaugojimas naršyklėje (`localStorage`)
 - Sumų formatavimas pagal lietuvišką standartą (`5 000,00 Eur`)
+- Puslapio viršuje rodomas euro monetų paveikslėlis
 
 ### Būsenos taisyklės
 
 - Be įrašų projektas yra `Nepradėta`
 - Pridėjus pirmą įrašą būsena automatiškai tampa `Vykdoma`
 - `Baigta` galima pasirinkti tik turint bent vieną įrašą
-- Kai projektas `Baigta`, naujų investicijų pridėti negalima
+- Kai projekto būsena `Baigta`, investicijų formos laukai ir įrašų trynimo mygtukai išjungiami
+- Pridėjimo ir trynimo veiksmai papildomai tikrina projekto būseną
 
 ## Technologijos
 
@@ -49,10 +51,11 @@ Kitos komandos:
 ```
 src/
 ├── main.jsx                    # Įėjimo taškas
-├── App.jsx                     # Pagrindinis komponentas, laiko state
-├── InvesticijaisViso.jsx       # Forma, lentelė, bendra suma
+├── App.jsx                     # Pagrindinis komponentas ir euro monetų paveikslėlis
+├── InvesticijaIsViso.jsx       # Forma, lentelė, bendra suma
 ├── ProjektoVykdymoBusena.jsx   # Projekto būsenos pasirinkimas
 ├── investicijos.js             # Konstantos, formatavimas, localStorage
+├── assets/hero-coins.jpg       # Puslapio viršutinis paveikslėlis
 └── *.css                       # Komponentų stiliai
 ```
 
@@ -72,14 +75,11 @@ Duomenys saugomi `localStorage` raktu `atsipirkimas-investicijos`.
 ## Žinomi apribojimai
 
 - Projekto būsena po puslapio perkrovimo neišsaugoma
-- Failo `InvesticijaisViso.jsx` pavadinimas nesutampa su importais (`InvesticijaIsViso`), todėl Linux aplinkoje build'as gali nepavykti
-- Trynimas leidžiamas ir tada, kai projektas `Baigta`
 - Įrašai rodomi įvedimo tvarka, ne chronologiškai
 - Pradiniame puslapyje dar likęs Vite šablono turinys
 
 ## Planai
 
-- Ištaisyti aukščiau paminėtus apribojimus
 - Išvalyti Vite šablono turinį
 - Rikiuoti įrašus chronologiškai
 - Pridėti atsipirkimo skaičiavimą (logika dar neapibrėžta)
