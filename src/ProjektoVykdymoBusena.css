@@ -1,0 +1,40 @@
+.projekto-busena {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 24px 32px;
+    border-top: 1px solid var(--border);
+    text-align: left;
+  }
+  
+  .projekto-busena-antraste {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  
+  .projekto-busena h2 {
+    margin: 0;
+    font-size: 24px;
+  }
+  
+  .projekto-busena select {
+    font: inherit;
+    color: var(--text-h);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 12px;
+    min-height: 40px;
+  }
+  
+  @media (max-width: 600px) {
+    .projekto-busena {
+      padding: 24px 20px;
+    }
+  
+    .projekto-busena-antraste {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }

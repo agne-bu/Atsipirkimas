@@ -1,0 +1,138 @@
+#investicija {
+  width: 100%;
+  box-sizing: border-box;
+  text-align: left;
+  padding: 32px;
+  border-top: 1px solid var(--border);
+
+  @media (max-width: 1024px) {
+    padding: 24px 20px;
+  }
+}
+
+.investicija-suma {
+  color: var(--text-h);
+  font-size: 24px;
+  font-weight: 500;
+  margin: 0 0 24px;
+}
+
+.investicija-forma {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.investicija-laukas {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.investicija-laukas label {
+  font-size: 14px;
+  color: var(--text);
+}
+
+.investicija-laukas input,
+.investicija-laukas select {
+  font: inherit;
+  color: var(--text-h);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 12px;
+  min-height: 40px;
+  box-sizing: border-box;
+}
+
+.investicija-laukas input:focus-visible,
+.investicija-laukas select:focus-visible,
+.investicija-prideti:focus-visible,
+.investicija-istrinti:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.investicija-laukas--metai input {
+  width: 110px;
+}
+
+.investicija-laukas--menuo select {
+  width: 160px;
+}
+
+.investicija-laukas--suma input {
+  width: 140px;
+}
+
+.investicija-prideti {
+  font-size: 20px;
+  line-height: 1;
+  min-width: 40px;
+  min-height: 40px;
+  padding: 5px 12px;
+  border-radius: 5px;
+  color: var(--accent);
+  background: var(--accent-bg);
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: border-color 0.3s;
+}
+
+.investicija-prideti:hover {
+  border-color: var(--accent-border);
+}
+
+.investicija-klaidos {
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+  color: #b42318;
+  font-size: 15px;
+}
+
+.investicija-lentele-wrap {
+  margin-top: 24px;
+  overflow-x: auto;
+}
+
+.investicija-lentele {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--text-h);
+}
+
+.investicija-lentele th,
+.investicija-lentele td {
+  border-bottom: 1px solid var(--border);
+  padding: 10px 8px;
+  text-align: left;
+}
+
+.investicija-lentele th:nth-child(3),
+.investicija-lentele td:nth-child(3) {
+  text-align: right;
+}
+
+.investicija-istrinti {
+  font-size: 16px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  color: var(--accent);
+  background: var(--accent-bg);
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: border-color 0.3s;
+}
+
+.investicija-istrinti:hover {
+  border-color: var(--accent-border);
+}
+
+.investicija-tuscia {
+  margin-top: 16px;
+  color: var(--text);
+}
