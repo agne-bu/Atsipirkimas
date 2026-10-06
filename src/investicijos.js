@@ -14,6 +14,7 @@ export const MENESIAI = [
 ]
 
 export const STORAGE_KEY = 'atsipirkimas-investicijos'
+
 export const PROJEKTO_NAUDOS_STORAGE_KEY = 'atsipirkimas-projekto-nauda'
 export const MENESINIAI_NAUDOS_TIPAI = ['Sutaupymas', 'Pajamos']
 
@@ -95,69 +96,51 @@ export function parseSuma(reiksme) {
 export function validuotiMenesinesNaudosForma(forma) {
   const klaidos = []
   const metai = Number(forma.metai)
-  const sutaupytaVandens = parseSuma(forma.sutaupytaVandens)
+  const vanduo = parseSuma(forma.sutaupytaVandens)
   const nauda = parseSuma(forma.nauda)
 
-  if (String(forma.metai).trim() === '' || !Number.isInteger(metai) || metai <= 0) {
-    klaidos.push('Įveskite tinkamus metus.')
-  }
+  if (!Number.isInteger(metai) || metai < 1) klaidos.push('Įveskite tinkamus metus.')
   if (!MENESIAI.includes(forma.menuo)) klaidos.push('Pasirinkite mėnesį.')
-  if (!MENESINIAI_NAUDOS_TIPAI.includes(forma.naudosTipas)) {
-    klaidos.push('Pasirinkite naudos tipą.')
-  }
-  if (!sutaupytaVandens.ok || sutaupytaVandens.verte < 0) {
-    klaidos.push('Vandens reikšmė turi būti skaičius, ne mažesnis už 0.')
-  }
-  if (!nauda.ok || nauda.verte < 0) {
-    klaidos.push('Nauda turi būti skaičius, ne mažesnis už 0.')
-  }
+  if (!MENESINIAI_NAUDOS_TIPAI.includes(forma.naudosTipas)) klaidos.push('Pasirinkite naudos tipą.')
+  if (!vanduo.ok || vanduo.verte < 0) klaidos.push('Įveskite tinkamą sutaupyto vandens kiekį.')
+  if (!nauda.ok || nauda.verte < 0) klaidos.push('Įveskite tinkamą naudos sumą.')
 
   return {
     klaidos,
     irasas: {
       metai,
-      menuo: forma.menuo,
-      naudosTipas: forma.naudosTipas,
-      sutaupytaVandens: sutaupytaVandens.ok ? sutaupytaVandens.verte : 0,
+      sutaupytaVandens: vanduo.ok ? vanduo.verte : 0,
       nauda: nauda.ok ? nauda.verte : 0,
     },
   }
 }
 
-export function arYraMenesinesNaudosDublikatas(irasai, irasas, ignoruojamoIrasaId = null) {
+export function arYraMenesinesNaudosDublikatas(irasai, naujasIrasa, praleidziamasId = null) {
   return irasai.some(
-    (esamas) =>
-      esamas.id !== ignoruojamoIrasaId &&
-      esamas.metai === irasas.metai &&
-      esamas.menuo === irasas.menuo &&
-      esamas.naudosTipas === irasas.naudosTipas,
+    (irasas) =>
+      irasas.id !== praleidziamasId &&
+      irasas.metai === naujasIrasa.metai &&
+      irasas.menuo === naujasIrasa.menuo &&
+      irasas.naudosTipas === naujasIrasa.naudosTipas,
   )
 }
 
 export function skaiciuotiMenesineNauda(irasai) {
-  const menesiai = new Map()
-
-  irasai.forEach((irasas) => {
-    const menesioIndeksas = MENESIAI.indexOf(irasas.menuo)
-    const raktas = `${irasas.metai}-${menesioIndeksas}`
-    const esamas = menesiai.get(raktas)
-
-    if (esamas) {
-      esamas.nauda += irasas.nauda
-      esamas.sutaupytaVandens += irasas.sutaupytaVandens
-    } else {
-      menesiai.set(raktas, {
-        metai: irasas.metai,
-        menuo: irasas.menuo,
-        menesioIndeksas,
-        nauda: irasas.nauda,
-        sutaupytaVandens: irasas.sutaupytaVandens,
-      })
+  const pagalMenesi = new Map()
+  for (const irasas of irasai) {
+    const raktas = `${irasas.metai}-${irasas.menuo}`
+    const esamas = pagalMenesi.get(raktas) || {
+      metai: irasas.metai,
+      menuo: irasas.menuo,
+      nauda: 0,
+      sutaupytaVandens: 0,
     }
-  })
-
-  return [...menesiai.values()].sort(
-    (a, b) => a.metai - b.metai || a.menesioIndeksas - b.menesioIndeksas,
+    esamas.nauda += irasas.nauda
+    esamas.sutaupytaVandens += irasas.sutaupytaVandens
+    pagalMenesi.set(raktas, esamas)
+  }
+  return [...pagalMenesi.values()].sort(
+    (a, b) => a.metai - b.metai || MENESIAI.indexOf(a.menuo) - MENESIAI.indexOf(b.menuo),
   )
 }
 
