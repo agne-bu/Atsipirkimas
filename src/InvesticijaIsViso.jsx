@@ -81,7 +81,8 @@ const galimaKeistiInvesticijas = projektoBusena !== 'Baigta'
   return (
     <section id="investicija">
       <p className="investicija-suma">
-        Investicija iš viso: {formatuotiSuma(viso)}
+        <span>Investicija iš viso:</span>
+        <strong className="investicija-suma-verte">{formatuotiSuma(viso)}</strong>
       </p>
 
       <form className="investicija-forma" onSubmit={pridetiIrasa} noValidate>
