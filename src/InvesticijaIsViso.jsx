@@ -43,6 +43,33 @@ function InvesticijaIsViso({ irasai, setIrasai, projektoBusena }) {
 const galimaKeistiInvesticijas = projektoBusena !== 'Baigta'
 
   const viso = useMemo(() => skaiciuotiBendraSuma(irasai), [irasai])
+  const menesiniaiDuomenys = useMemo(() => {
+    const sumos = new Map()
+
+    irasai.forEach((irasas) => {
+      const menesioIndeksas = MENESIAI.indexOf(irasas.menuo)
+      const raktas = `${irasas.metai}-${menesioIndeksas}`
+      const esamas = sumos.get(raktas)
+      if (esamas) {
+        esamas.suma += irasas.suma
+      } else {
+        sumos.set(raktas, {
+          metai: irasas.metai,
+          menuo: irasas.menuo,
+          menesioIndeksas,
+          suma: irasas.suma,
+        })
+      }
+    })
+
+    return [...sumos.values()].sort(
+      (a, b) => a.metai - b.metai || a.menesioIndeksas - b.menesioIndeksas,
+    )
+  }, [irasai])
+  const didziausiaMenesioSuma = Math.max(
+    0,
+    ...menesiniaiDuomenys.map((irasas) => irasas.suma),
+  )
 
   function keistiLauka(laukas, verte) {
     setForma((dabartine) => ({ ...dabartine, [laukas]: verte }))
@@ -146,41 +173,78 @@ const galimaKeistiInvesticijas = projektoBusena !== 'Baigta'
         </ul>
       ) : null}
 
-      {irasai.length === 0 ? (
-        <p className="investicija-tuscia">Kol kas nėra įvestų investicijų.</p>
-      ) : (
+      <div className="investicija-turinys">
         <div className="investicija-lentele-wrap">
-          <table className="investicija-lentele">
-            <thead>
-              <tr>
-                <th>Metai</th>
-                <th>Mėnuo</th>
-                <th>Suma, Eur</th>
-                <th>Veiksmas</th>
-              </tr>
-            </thead>
-            <tbody>
-              {irasai.map((irasas) => (
-                <tr key={irasas.id}>
-                  <td>{irasas.metai}</td>
-                  <td>{irasas.menuo}</td>
-                  <td>{formatuotiSkaiciu(irasas.suma)}</td>
-                  <td>
-                    <button
-                      type="button"
-                      className="investicija-istrinti"
-                      onClick={() => istrintiIrasa(irasas.id)}
-                      disabled={!galimaKeistiInvesticijas}
-                    >
-                      Ištrinti
-                    </button>
-                  </td>
+          {irasai.length === 0 ? (
+            <p className="investicija-tuscia">Kol kas nėra įvestų investicijų.</p>
+          ) : (
+            <table className="investicija-lentele">
+              <thead>
+                <tr>
+                  <th>Metai</th>
+                  <th>Mėnuo</th>
+                  <th>Suma, Eur</th>
+                  <th>Veiksmas</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {irasai.map((irasas) => (
+                  <tr key={irasas.id}>
+                    <td>{irasas.metai}</td>
+                    <td>{irasas.menuo}</td>
+                    <td>{formatuotiSkaiciu(irasas.suma)}</td>
+                    <td>
+                      <button
+                        type="button"
+                        className="investicija-istrinti"
+                        onClick={() => istrintiIrasa(irasas.id)}
+                        disabled={!galimaKeistiInvesticijas}
+                      >
+                        Ištrinti
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
         </div>
-      )}
+
+        <section className="investicija-grafikas" aria-labelledby="investicija-grafikas-antraste">
+          <h2 id="investicija-grafikas-antraste">Investicijos pagal mėnesius</h2>
+          {menesiniaiDuomenys.length === 0 ? (
+            <p className="investicija-tuscia">Grafikas atsiras pridėjus investicijų.</p>
+          ) : (
+            <div className="investicija-grafikas-slinktis">
+              <svg
+                className="investicija-grafikas-svg"
+                viewBox={`0 0 ${Math.max(640, menesiniaiDuomenys.length * 58 + 32)} 280`}
+                style={{ width: `${Math.max(640, menesiniaiDuomenys.length * 58 + 32)}px` }}
+                role="img"
+                aria-label="Investicijų sumos pagal mėnesį ir metus"
+              >
+                {[0, 1, 2, 3].map((eilute) => {
+                  const y = 222 - eilute * 64
+                  return <line key={eilute} x1="32" x2={Math.max(624, menesiniaiDuomenys.length * 58 + 16)} y1={y} y2={y} className="investicija-grafikas-tinklelis" />
+                })}
+                {menesiniaiDuomenys.map((duomuo, indeksas) => {
+                  const aukstis = (duomuo.suma / didziausiaMenesioSuma) * 192
+                  const x = 42 + indeksas * 58
+                  const trumpasMenuo = duomuo.menuo.slice(0, 3)
+                  return (
+                    <g key={`${duomuo.metai}-${duomuo.menuo}`}>
+                      <title>{`${duomuo.menuo} ${duomuo.metai}: ${formatuotiSuma(duomuo.suma)}`}</title>
+                      <rect x={x} y={222 - aukstis} width="34" height={aukstis} rx="4" className="investicija-grafikas-stulpelis" />
+                      <text x={x + 17} y="244" textAnchor="middle" className="investicija-grafikas-menuo">{trumpasMenuo}</text>
+                      <text x={x + 17} y="261" textAnchor="middle" className="investicija-grafikas-metai">{duomuo.metai}</text>
+                    </g>
+                  )
+                })}
+              </svg>
+            </div>
+          )}
+        </section>
+      </div>
     </section>
   )
 }

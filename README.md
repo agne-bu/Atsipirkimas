@@ -6,6 +6,10 @@ Investicijų žurnalas, sukurtas su React ir Vite. Leidžia suvesti investicijas
 
 - Investicijų pridėjimas per formą (metai, mėnuo, suma)
 - Investicijų sąrašas lentelėje su galimybe ištrinti įrašą
+- Mėnesinių investicijų stulpelinė diagrama šalia įrašų lentelės
+- Diagramos sumos agreguojamos pagal mėnesį ir metus, o mėnesiai rikiuojami chronologiškai
+- Diagramoje užvedus pelės žymeklį ant stulpelio rodoma tiksli suma
+- Mažesniuose ekranuose lentelė ir diagrama išdėstomos viena po kitos
 - Bendros investuotos sumos skaičiavimas
 - Projekto vykdymo būsena: `Nepradėta`, `Vykdoma`, `Baigta`
 - Duomenų išsaugojimas naršyklėje (`localStorage`)
@@ -52,7 +56,7 @@ Kitos komandos:
 src/
 ├── main.jsx                    # Įėjimo taškas
 ├── App.jsx                     # Pagrindinis komponentas ir euro monetų paveikslėlis
-├── InvesticijaIsViso.jsx       # Forma, lentelė, bendra suma
+├── InvesticijaIsViso.jsx       # Forma, lentelė, bendra suma ir mėnesinė diagrama
 ├── ProjektoVykdymoBusena.jsx   # Projekto būsenos pasirinkimas
 ├── investicijos.js             # Konstantos, formatavimas, localStorage
 ├── assets/hero-coins.jpg       # Puslapio viršutinis paveikslėlis
@@ -76,10 +80,11 @@ Duomenys saugomi `localStorage` raktu `atsipirkimas-investicijos`.
 
 - Projekto būsena po puslapio perkrovimo neišsaugoma
 - Įrašai rodomi įvedimo tvarka, ne chronologiškai
+- Mėnesio ir metų poros diagramoje rodomos chronologiškai; keli to paties mėnesio ir metų įrašai sudedami
 - Pradiniame puslapyje dar likęs Vite šablono turinys
 
 ## Planai
 
 - Išvalyti Vite šablono turinį
-- Rikiuoti įrašus chronologiškai
+- Nuspręsti, ar įrašų lentelę rikiuoti chronologiškai
 - Pridėti atsipirkimo skaičiavimą (logika dar neapibrėžta)

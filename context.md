@@ -8,7 +8,7 @@
 
 - React 19, Vite 8, JavaScript ir paprastas CSS.
 - `src/App.jsx` yra pagrindinis komponentas: laiko investicijų bei projekto būsenos React būseną ir pateikia puslapio struktūrą.
-- `src/InvesticijaIsViso.jsx` rodo investicijų formą, įrašų lentelę ir bendrą sumą.
+- `src/InvesticijaIsViso.jsx` rodo investicijų formą, įrašų lentelę, bendrą sumą ir mėnesinę diagramą.
 - `src/ProjektoVykdymoBusena.jsx` leidžia pasirinkti projekto būseną.
 - `src/investicijos.js` saugo mėnesių sąrašą, sumų formatavimo bei analizavimo funkcijas, investicijų tikrinimą ir `localStorage` operacijas.
 - Komponentų stiliai laikomi atskiruose CSS failuose.
@@ -24,6 +24,8 @@
 - Kai būsena `Baigta`, investicijų įvedimo laukai ir trynimo mygtukai išjungiami. Pridėjimo bei trynimo funkcijos taip pat patikrina būseną prieš keisdamos įrašus.
 - Projekto būsena perskaitoma iš `localStorage` rakto `atsipirkimas-projekto-busena`, tačiau šiuo metu programoje nėra kodo, kuris ją įrašytų. Todėl būsenos pasirinkimas po puslapio perkrovimo neišlieka.
 - Investicijos pateikiamos įvedimo tvarka; chronologinio rikiavimo nėra.
+- Įrašų lentelė ir mėnesinė diagrama platesniuose ekranuose išdėstytos greta, o siauresniuose persirikiuoja viena po kitos. Lentelė užima siauresnę dalį turinio.
+- Diagrama kuriama SVG kodu be papildomos grafiko bibliotekos. To paties mėnesio ir metų investicijų įrašai sudedami, o mėnesio ir metų poros rikiuojamos chronologiškai. Užvedus žymeklį ant stulpelio matoma tiksli suma.
 - Puslapyje dar likęs dalis pradinio Vite šablono turinio.
 
 ## Darbo su kodu gairės
@@ -37,6 +39,6 @@
 ## Galimos tolimesnės užduotys
 
 - Pašalinti likusį Vite demonstracinį turinį.
-- Pridėti įrašų chronologinį rikiavimą.
+- Nuspręsti, ar investicijų įrašų lentelė taip pat turi būti rikiuojama chronologiškai.
 - Apibrėžti ir įgyvendinti atsipirkimo skaičiavimą.
 - Nuspręsti, ar projekto būsena turi būti įrašoma į `localStorage`, ir atitinkamai įgyvendinti.

@@ -117,8 +117,16 @@
 }
 
 .investicija-lentele-wrap {
-  margin-top: 24px;
+  min-width: 0;
   overflow-x: auto;
+}
+
+.investicija-turinys {
+  display: grid;
+  grid-template-columns: minmax(340px, 0.9fr) minmax(0, 1.3fr);
+  gap: 32px;
+  align-items: start;
+  margin-top: 24px;
 }
 
 .investicija-lentele {
@@ -130,8 +138,10 @@
 .investicija-lentele th,
 .investicija-lentele td {
   border-bottom: 1px solid var(--border);
-  padding: 10px 8px;
+  padding: 9px 6px;
   text-align: left;
+  font-size: 14px;
+  white-space: nowrap;
 }
 
 .investicija-lentele th:nth-child(3),
@@ -140,8 +150,8 @@
 }
 
 .investicija-istrinti {
-  font-size: 16px;
-  padding: 5px 10px;
+  font-size: 14px;
+  padding: 5px 8px;
   border-radius: 5px;
   color: var(--accent);
   background: var(--accent-bg);
@@ -157,4 +167,56 @@
 .investicija-tuscia {
   margin-top: 16px;
   color: var(--text);
+}
+
+.investicija-grafikas {
+  min-width: 0;
+  padding: 18px 20px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg);
+}
+
+.investicija-grafikas h2 {
+  margin: 0 0 12px;
+  color: var(--text-h);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.investicija-grafikas-slinktis {
+  overflow-x: auto;
+}
+
+.investicija-grafikas-svg {
+  display: block;
+  height: 280px;
+}
+
+.investicija-grafikas-tinklelis {
+  stroke: var(--border);
+  stroke-width: 1;
+}
+
+.investicija-grafikas-stulpelis {
+  fill: var(--accent);
+}
+
+.investicija-grafikas-menuo,
+.investicija-grafikas-metai {
+  fill: var(--text);
+  font-family: inherit;
+  font-size: 11px;
+}
+
+.investicija-grafikas-metai {
+  fill: var(--text-h);
+  font-size: 10px;
+}
+
+@media (max-width: 1024px) {
+  .investicija-turinys {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+  }
 }
