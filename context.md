@@ -7,7 +7,8 @@
 ## Technologijos ir sandara
 
 - React 19, Vite 8, JavaScript ir paprastas CSS.
-- `src/App.jsx` yra pagrindinis komponentas: laiko investicijų bei projekto būsenos React būseną ir pateikia puslapio struktūrą.
+- `src/App.jsx` yra pagrindinis komponentas: laiko investicijų, projekto naudos bei projekto būsenos React būseną ir per URL fragmentus `#investicijos` / `#projekto-nauda` parenka atskirą puslapio vaizdą.
+- `src/ProjektoNauda.jsx` rodo projekto naudos aprašymo lauką ir vandens bei piniginės naudos korteles; stiliai yra `src/ProjektoNauda.css` faile.
 - `src/InvesticijaIsViso.jsx` rodo investicijų formą, įrašų lentelę, bendrą sumą ir mėnesinę diagramą.
 - `src/ProjektoVykdymoBusena.jsx` leidžia pasirinkti projekto būseną.
 - `src/investicijos.js` saugo mėnesių sąrašą, sumų formatavimo bei analizavimo funkcijas, investicijų tikrinimą ir `localStorage` operacijas.
@@ -18,6 +19,8 @@
 
 - Investicijos objektas: `{ id, metai, menuo, suma }`; `id` sukuriamas su `crypto.randomUUID()`.
 - Investicijų masyvas saugomas naršyklės `localStorage` raktu `atsipirkimas-investicijos`.
+- Projekto naudos objektas `{ aprasymas, sutaupytaVandens, investicijosNauda }` saugomas atskiru `localStorage` raktu `atsipirkimas-projekto-nauda`; investicijų duomenų formatas ir raktas nepakeisti.
+- Projekto naudos aprašymas redaguojamas ir išsaugomas kartu su abiem kortelių reikšmėmis. Kol kas kortelių skaitinių reikšmių įvedimo laukai ir jų skaičiavimo formulės neapibrėžti, todėl reikšmės lieka 0.
 - Galimos būsenos: `Nepradėta`, `Vykdoma`, `Baigta`.
 - Be investicijų pradinė būsena yra `Nepradėta`. Pridėjus pirmą įrašą būsena automatiškai tampa `Vykdoma`.
 - Būseną `Baigta` galima pasirinkti tik esant bent vienam investicijų įrašui.

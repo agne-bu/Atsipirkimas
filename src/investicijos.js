@@ -14,6 +14,45 @@ export const MENESIAI = [
 ]
 
 export const STORAGE_KEY = 'atsipirkimas-investicijos'
+export const PROJEKTO_NAUDOS_STORAGE_KEY = 'atsipirkimas-projekto-nauda'
+
+export function ikeltiProjektoNauda() {
+  const tusciaNauda = {
+    aprasymas: '',
+    sutaupytaVandens: 0,
+    investicijosNauda: 0,
+  }
+
+  try {
+    const raw = localStorage.getItem(PROJEKTO_NAUDOS_STORAGE_KEY)
+    if (!raw) return tusciaNauda
+
+    const parsed = JSON.parse(raw)
+    if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+      return tusciaNauda
+    }
+
+    return {
+      aprasymas: typeof parsed.aprasymas === 'string' ? parsed.aprasymas : '',
+      sutaupytaVandens:
+        typeof parsed.sutaupytaVandens === 'number' &&
+        Number.isFinite(parsed.sutaupytaVandens)
+          ? parsed.sutaupytaVandens
+          : 0,
+      investicijosNauda:
+        typeof parsed.investicijosNauda === 'number' &&
+        Number.isFinite(parsed.investicijosNauda)
+          ? parsed.investicijosNauda
+          : 0,
+    }
+  } catch {
+    return tusciaNauda
+  }
+}
+
+export function issaugotiProjektoNauda(nauda) {
+  localStorage.setItem(PROJEKTO_NAUDOS_STORAGE_KEY, JSON.stringify(nauda))
+}
 
 const sumaFormatas = new Intl.NumberFormat('lt-LT', {
   minimumFractionDigits: 2,

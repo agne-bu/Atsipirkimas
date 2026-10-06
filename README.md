@@ -11,10 +11,12 @@ Investicijų žurnalas, sukurtas su React ir Vite. Leidžia suvesti investicijas
 - Diagramoje užvedus pelės žymeklį ant stulpelio rodoma tiksli suma
 - Mažesniuose ekranuose lentelė ir diagrama išdėstomos viena po kitos
 - Bendros investuotos sumos skaičiavimas
+- Projekto naudos aprašymas, išsaugomas naršyklėje
+- Sutaupyto vandens ir investicijos naudos rezultatų kortelės (pradinės reikšmės: 0)
+- Atskiri „Investicijos“ ir „Projekto nauda“ puslapio vaizdai, perjungiami navigacija
 - Projekto vykdymo būsena: `Nepradėta`, `Vykdoma`, `Baigta`
 - Duomenų išsaugojimas naršyklėje (`localStorage`)
 - Sumų formatavimas pagal lietuvišką standartą (`5 000,00 Eur`)
-- Puslapio viršuje rodomas euro monetų paveikslėlis
 
 ### Būsenos taisyklės
 
@@ -55,7 +57,9 @@ Kitos komandos:
 ```
 src/
 ├── main.jsx                    # Įėjimo taškas
-├── App.jsx                     # Pagrindinis komponentas ir euro monetų paveikslėlis
+├── App.jsx                     # Pagrindinis komponentas ir bendros būsenos
+├── ProjektoNauda.jsx           # Projekto naudos aprašymas ir rezultatų kortelės
+├── ProjektoNauda.css           # Projekto naudos stiliai
 ├── InvesticijaIsViso.jsx       # Forma, lentelė, bendra suma ir mėnesinė diagrama
 ├── ProjektoVykdymoBusena.jsx   # Projekto būsenos pasirinkimas
 ├── investicijos.js             # Konstantos, formatavimas, localStorage
@@ -75,6 +79,18 @@ src/
 ```
 
 Duomenys saugomi `localStorage` raktu `atsipirkimas-investicijos`.
+
+Projekto naudos duomenys saugomi atskirai raktu `atsipirkimas-projekto-nauda`:
+
+```js
+{
+  aprasymas: string,
+  sutaupytaVandens: number, // m³
+  investicijosNauda: number // Eur
+}
+```
+
+Puslapio vaizdai pasirenkami URL fragmentais `#investicijos` ir `#projekto-nauda`.
 
 ## Žinomi apribojimai
 
