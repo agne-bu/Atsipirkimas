@@ -1,10 +1,8 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useMemo, useState } from 'react'
 import {
   MENESIAI,
   formatuotiSkaiciu,
   formatuotiSuma,
-  ikeltiInvesticijas,
-  issaugotiInvesticijas,
   parseSuma,
   skaiciuotiBendraSuma,
 } from './investicijos'

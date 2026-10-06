@@ -1,0 +1,285 @@
+.projekto-nauda {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 32px;
+  border-top: 1px solid var(--border);
+  text-align: left;
+}
+
+.projekto-nauda-antraste h1 {
+  margin: 0 0 24px;
+  font-size: 36px;
+  letter-spacing: -0.8px;
+}
+
+.projekto-nauda-korteles {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.projekto-nauda-kortele {
+  min-width: 0;
+  padding: 20px 24px;
+  border: 1px solid var(--accent-border);
+  border-radius: 12px;
+  background: var(--accent-bg);
+}
+
+.projekto-nauda-kortele h2 {
+  margin: 0 0 8px;
+  color: var(--text);
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.projekto-nauda-reiksme {
+  color: var(--text-h);
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.projekto-nauda-reiksme span {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.projekto-nauda-aprasymas {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.projekto-nauda-aprasymas label {
+  color: var(--text-h);
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.projekto-nauda-aprasymas textarea {
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 104px;
+  padding: 12px 14px;
+  resize: vertical;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg);
+  color: var(--text-h);
+  font: inherit;
+}
+
+.projekto-nauda-aprasymas textarea:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.projekto-nauda-aprasymas textarea::placeholder {
+  color: var(--text);
+  opacity: 0.8;
+}
+
+.projekto-nauda-menesiui {
+  margin-top: 32px;
+}
+
+.projekto-nauda-menesiui > h2 {
+  margin-bottom: 16px;
+  color: var(--text-h);
+}
+
+.projekto-nauda-forma {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.projekto-nauda-laukas {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.projekto-nauda-laukas label {
+  color: var(--text);
+  font-size: 14px;
+}
+
+.projekto-nauda-laukas input,
+.projekto-nauda-laukas select {
+  min-height: 40px;
+  box-sizing: border-box;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text-h);
+  font: inherit;
+}
+
+.projekto-nauda-laukas--metai input {
+  width: 100px;
+}
+
+.projekto-nauda-laukas--menuo select,
+.projekto-nauda-laukas--tipas select {
+  width: 140px;
+}
+
+.projekto-nauda-laukas--vanduo input {
+  width: 160px;
+}
+
+.projekto-nauda-laukas--nauda input {
+  width: 130px;
+}
+
+.projekto-nauda-laukas input:focus-visible,
+.projekto-nauda-laukas select:focus-visible,
+.projekto-nauda-prideti:focus-visible,
+.projekto-nauda-istrinti:focus-visible,
+.projekto-nauda-redaguoti:focus-visible,
+.projekto-nauda-atsaukti:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.projekto-nauda-prideti,
+.projekto-nauda-istrinti,
+.projekto-nauda-redaguoti,
+.projekto-nauda-atsaukti {
+  min-height: 40px;
+  padding: 5px 12px;
+  border: 2px solid transparent;
+  border-radius: 5px;
+  background: var(--accent-bg);
+  color: var(--accent);
+  cursor: pointer;
+  transition: border-color 0.3s;
+}
+
+.projekto-nauda-prideti {
+  min-width: 40px;
+  font-size: 20px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.projekto-nauda-prideti--redaguoti {
+  font-size: 14px;
+}
+
+.projekto-nauda-prideti:hover,
+.projekto-nauda-prideti--redaguoti:hover,
+.projekto-nauda-istrinti:hover,
+.projekto-nauda-redaguoti:hover,
+.projekto-nauda-atsaukti:hover {
+  border-color: var(--accent-border);
+}
+
+.projekto-nauda-atsaukti {
+  color: var(--text);
+  background: var(--bg);
+  border-color: var(--border);
+}
+
+.projekto-nauda-klaidos {
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+  color: #b42318;
+  font-size: 14px;
+}
+
+.projekto-nauda-lentele-wrap {
+  margin-top: 24px;
+  overflow-x: auto;
+}
+
+.projekto-nauda-lentele {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--text-h);
+}
+
+.projekto-nauda-lentele th,
+.projekto-nauda-lentele td {
+  padding: 9px 8px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  white-space: nowrap;
+  font-size: 14px;
+}
+
+.projekto-nauda-grafikas {
+  margin: 28px 0 32px;
+  padding: 18px 20px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--bg);
+}
+
+.projekto-nauda-grafikas h2 {
+  margin: 0 0 12px;
+  color: var(--text-h);
+  font-size: 18px;
+}
+
+.projekto-nauda-grafikas-tuscia {
+  color: var(--text);
+}
+
+.projekto-nauda-grafikas-slinktis {
+  overflow-x: auto;
+}
+
+.projekto-nauda-grafikas-svg {
+  display: block;
+  height: 280px;
+}
+
+.projekto-nauda-grafikas-tinklelis {
+  stroke: var(--border);
+  stroke-width: 1;
+}
+
+.projekto-nauda-grafikas-stulpelis {
+  fill: var(--accent);
+}
+
+.projekto-nauda-grafikas-menuo,
+.projekto-nauda-grafikas-metai {
+  fill: var(--text);
+  font-family: inherit;
+  font-size: 11px;
+}
+
+.projekto-nauda-grafikas-metai {
+  fill: var(--text-h);
+  font-size: 10px;
+}
+
+@media (max-width: 1024px) {
+  .projekto-nauda {
+    padding: 24px 20px;
+  }
+
+  .projekto-nauda-antraste h1 {
+    font-size: 30px;
+  }
+}
+
+@media (max-width: 600px) {
+  .projekto-nauda-korteles {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .projekto-nauda-reiksme {
+    font-size: 28px;
+  }
+}

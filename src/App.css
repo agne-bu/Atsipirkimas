@@ -1,3 +1,32 @@
+.puslapio-navigacija {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.puslapio-navigacija a {
+  display: inline-block;
+  padding: 8px 14px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  color: var(--text);
+  text-decoration: none;
+}
+
+.puslapio-navigacija a:hover,
+.puslapio-navigacija a:focus-visible {
+  border-color: var(--accent-border);
+  outline: none;
+}
+
+.puslapio-navigacija a[aria-current='page'] {
+  border-color: var(--accent-border);
+  color: var(--text-h);
+  background: var(--accent-bg);
+}
+
 .counter {
   font-size: 16px;
   padding: 5px 10px;
