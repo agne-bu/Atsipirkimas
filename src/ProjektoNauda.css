@@ -82,6 +82,122 @@
   opacity: 0.8;
 }
 
+.projekto-nauda-menesiui {
+  margin-top: 32px;
+}
+
+.projekto-nauda-menesiui > h2 {
+  margin-bottom: 16px;
+  color: var(--text-h);
+}
+
+.projekto-nauda-forma {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.projekto-nauda-laukas {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.projekto-nauda-laukas label {
+  color: var(--text);
+  font-size: 14px;
+}
+
+.projekto-nauda-laukas input,
+.projekto-nauda-laukas select {
+  min-height: 40px;
+  box-sizing: border-box;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--bg);
+  color: var(--text-h);
+  font: inherit;
+}
+
+.projekto-nauda-laukas--metai input {
+  width: 100px;
+}
+
+.projekto-nauda-laukas--menuo select,
+.projekto-nauda-laukas--tipas select {
+  width: 140px;
+}
+
+.projekto-nauda-laukas--vanduo input {
+  width: 160px;
+}
+
+.projekto-nauda-laukas--nauda input {
+  width: 130px;
+}
+
+.projekto-nauda-laukas input:focus-visible,
+.projekto-nauda-laukas select:focus-visible,
+.projekto-nauda-prideti:focus-visible,
+.projekto-nauda-istrinti:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.projekto-nauda-prideti,
+.projekto-nauda-istrinti {
+  min-height: 40px;
+  padding: 5px 12px;
+  border: 2px solid transparent;
+  border-radius: 5px;
+  background: var(--accent-bg);
+  color: var(--accent);
+  cursor: pointer;
+  transition: border-color 0.3s;
+}
+
+.projekto-nauda-prideti {
+  min-width: 40px;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.projekto-nauda-prideti:hover,
+.projekto-nauda-istrinti:hover {
+  border-color: var(--accent-border);
+}
+
+.projekto-nauda-klaidos {
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+  color: #b42318;
+  font-size: 14px;
+}
+
+.projekto-nauda-lentele-wrap {
+  margin-top: 24px;
+  overflow-x: auto;
+}
+
+.projekto-nauda-lentele {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--text-h);
+}
+
+.projekto-nauda-lentele th,
+.projekto-nauda-lentele td {
+  padding: 9px 8px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  white-space: nowrap;
+  font-size: 14px;
+}
+
 @media (max-width: 1024px) {
   .projekto-nauda {
     padding: 24px 20px;

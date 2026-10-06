@@ -12,7 +12,8 @@ Investicijų žurnalas, sukurtas su React ir Vite. Leidžia suvesti investicijas
 - Mažesniuose ekranuose lentelė ir diagrama išdėstomos viena po kitos
 - Bendros investuotos sumos skaičiavimas
 - Projekto naudos aprašymas, išsaugomas naršyklėje
-- Sutaupyto vandens ir investicijos naudos rezultatų kortelės (pradinės reikšmės: 0)
+- Mėnesinės naudos įrašai su metų, mėnesio, tipo, vandens ir piniginės naudos laukais
+- Naudos kortelės automatiškai sumuoja įrašų vandens rodiklį ir finansinę naudą
 - Atskiri „Investicijos“ ir „Projekto nauda“ puslapio vaizdai, perjungiami navigacija
 - Projekto vykdymo būsena: `Nepradėta`, `Vykdoma`, `Baigta`
 - Duomenų išsaugojimas naršyklėje (`localStorage`)
@@ -58,12 +59,11 @@ Kitos komandos:
 src/
 ├── main.jsx                    # Įėjimo taškas
 ├── App.jsx                     # Pagrindinis komponentas ir bendros būsenos
-├── ProjektoNauda.jsx           # Projekto naudos aprašymas ir rezultatų kortelės
+├── ProjektoNauda.jsx           # Aprašymas, mėnesinės naudos forma, lentelė ir rezultatų kortelės
 ├── ProjektoNauda.css           # Projekto naudos stiliai
 ├── InvesticijaIsViso.jsx       # Forma, lentelė, bendra suma ir mėnesinė diagrama
 ├── ProjektoVykdymoBusena.jsx   # Projekto būsenos pasirinkimas
 ├── investicijos.js             # Konstantos, formatavimas, localStorage
-├── assets/hero-coins.jpg       # Puslapio viršutinis paveikslėlis
 └── *.css                       # Komponentų stiliai
 ```
 
@@ -85,10 +85,20 @@ Projekto naudos duomenys saugomi atskirai raktu `atsipirkimas-projekto-nauda`:
 ```js
 {
   aprasymas: string,
-  sutaupytaVandens: number, // m³
-  investicijosNauda: number // Eur
+  menesiniaiIrasai: [
+    {
+      id: string,
+      metai: number,
+      menuo: string,
+      naudosTipas: string, // 'Sutaupymas' arba 'Pajamos'
+      sutaupytaVandens: number, // m
+      nauda: number // Eur
+    }
+  ]
 }
 ```
+
+Kiekvieniems metams, mėnesiui ir naudos tipui leidžiamas vienas įrašas. Vandens ir eurų reikšmėms leidžiamas 0; neigiamos ar netinkamos reikšmės atmetamos.
 
 Puslapio vaizdai pasirenkami URL fragmentais `#investicijos` ir `#projekto-nauda`.
 
@@ -97,7 +107,6 @@ Puslapio vaizdai pasirenkami URL fragmentais `#investicijos` ir `#projekto-nauda
 - Projekto būsena po puslapio perkrovimo neišsaugoma
 - Įrašai rodomi įvedimo tvarka, ne chronologiškai
 - Mėnesio ir metų poros diagramoje rodomos chronologiškai; keli to paties mėnesio ir metų įrašai sudedami
-- Pradiniame puslapyje dar likęs Vite šablono turinys
 
 ## Planai
 

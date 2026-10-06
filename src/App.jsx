@@ -23,6 +23,10 @@ function App() {
   
    return irasai.length === 0 ? 'Nepradėta' : issaugotaBusena || 'Vykdoma'
   })
+  const rodomaProjektoBusena =
+    irasai.length > 0 && projektoBusena === 'Nepradėta'
+      ? 'Vykdoma'
+      : projektoBusena
 
   useEffect(() => {
     issaugotiInvesticijas(irasai)
@@ -45,12 +49,6 @@ function App() {
     return () => window.removeEventListener('hashchange', atnaujintiPuslapi)
   }, [])
   
-  useEffect(() => {
-    if (irasai.length > 0 && projektoBusena === 'Nepradėta') {
-      setProjektoBusena('Vykdoma')
-    }
-  }, [irasai.length, projektoBusena])
-
   return (
     <>
       <nav className="puslapio-navigacija" aria-label="Pagrindinė navigacija">
@@ -74,7 +72,7 @@ function App() {
         <main id="investicijos">
           <ProjektoVykdymoBusena
             investicijuKiekis={irasai.length}
-            busena={projektoBusena}
+            busena={rodomaProjektoBusena}
             setBusena={setProjektoBusena}
           />
           <InvesticijaIsViso

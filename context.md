@@ -8,19 +8,20 @@
 
 - React 19, Vite 8, JavaScript ir paprastas CSS.
 - `src/App.jsx` yra pagrindinis komponentas: laiko investicijų, projekto naudos bei projekto būsenos React būseną ir per URL fragmentus `#investicijos` / `#projekto-nauda` parenka atskirą puslapio vaizdą.
-- `src/ProjektoNauda.jsx` rodo projekto naudos aprašymo lauką ir vandens bei piniginės naudos korteles; stiliai yra `src/ProjektoNauda.css` faile.
+- `src/ProjektoNauda.jsx` rodo projekto naudos aprašymą, mėnesinės naudos formą, įrašų lentelę ir apskaičiuojamas vandens bei piniginės naudos korteles; stiliai yra `src/ProjektoNauda.css` faile.
 - `src/InvesticijaIsViso.jsx` rodo investicijų formą, įrašų lentelę, bendrą sumą ir mėnesinę diagramą.
 - `src/ProjektoVykdymoBusena.jsx` leidžia pasirinkti projekto būseną.
 - `src/investicijos.js` saugo mėnesių sąrašą, sumų formatavimo bei analizavimo funkcijas, investicijų tikrinimą ir `localStorage` operacijas.
 - Komponentų stiliai laikomi atskiruose CSS failuose.
-- Viršutinio paveikslėlio pagrindas yra `src/assets/hero-coins.jpg`. `App.jsx` taip pat rodo React ir Vite logotipus ant jo.
+- Pagrindinis vaizdas parenkamas navigacijos URL fragmentais; projekto naudos forma ir investicijų forma yra atskiruose vaizduose.
 
 ## Duomenys ir elgsena
 
 - Investicijos objektas: `{ id, metai, menuo, suma }`; `id` sukuriamas su `crypto.randomUUID()`.
 - Investicijų masyvas saugomas naršyklės `localStorage` raktu `atsipirkimas-investicijos`.
-- Projekto naudos objektas `{ aprasymas, sutaupytaVandens, investicijosNauda }` saugomas atskiru `localStorage` raktu `atsipirkimas-projekto-nauda`; investicijų duomenų formatas ir raktas nepakeisti.
-- Projekto naudos aprašymas redaguojamas ir išsaugomas kartu su abiem kortelių reikšmėmis. Kol kas kortelių skaitinių reikšmių įvedimo laukai ir jų skaičiavimo formulės neapibrėžti, todėl reikšmės lieka 0.
+- Projekto naudos objektas `{ aprasymas, menesiniaiIrasai }` saugomas `localStorage` raktu `atsipirkimas-projekto-nauda`; investicijų įrašų struktūra ir raktas nepakeisti.
+- Mėnesinės naudos įrašas yra `{ id, metai, menuo, naudosTipas, sutaupytaVandens, nauda }`. Vienam metų, mėnesio ir naudos tipo deriniui leidžiamas vienas įrašas. Vandens ir eurų reikšmės gali būti 0, bet ne neigiamos.
+- Vandens kortelė sumuoja `sutaupytaVandens`, o finansinė kortelė sumuoja `nauda` iš visų mėnesinių įrašų. Ištrynus įrašą, kortelės perskaičiuojamos.
 - Galimos būsenos: `Nepradėta`, `Vykdoma`, `Baigta`.
 - Be investicijų pradinė būsena yra `Nepradėta`. Pridėjus pirmą įrašą būsena automatiškai tampa `Vykdoma`.
 - Būseną `Baigta` galima pasirinkti tik esant bent vienam investicijų įrašui.
@@ -43,5 +44,5 @@
 
 - Pašalinti likusį Vite demonstracinį turinį.
 - Nuspręsti, ar investicijų įrašų lentelė taip pat turi būti rikiuojama chronologiškai.
-- Apibrėžti ir įgyvendinti atsipirkimo skaičiavimą.
+- Apibrėžti ir įgyvendinti platesnį projekto atsipirkimo skaičiavimą.
 - Nuspręsti, ar projekto būsena turi būti įrašoma į `localStorage`, ir atitinkamai įgyvendinti.

@@ -15,12 +15,12 @@ export const MENESIAI = [
 
 export const STORAGE_KEY = 'atsipirkimas-investicijos'
 export const PROJEKTO_NAUDOS_STORAGE_KEY = 'atsipirkimas-projekto-nauda'
+export const MENESINIAI_NAUDOS_TIPAI = ['Sutaupymas', 'Pajamos']
 
 export function ikeltiProjektoNauda() {
   const tusciaNauda = {
     aprasymas: '',
-    sutaupytaVandens: 0,
-    investicijosNauda: 0,
+    menesiniaiIrasai: [],
   }
 
   try {
@@ -32,18 +32,27 @@ export function ikeltiProjektoNauda() {
       return tusciaNauda
     }
 
+    const menesiniaiIrasai = Array.isArray(parsed.menesiniaiIrasai)
+      ? parsed.menesiniaiIrasai.filter(
+          (irasas) =>
+            irasas &&
+            typeof irasas.id === 'string' &&
+            Number.isInteger(irasas.metai) &&
+            irasas.metai > 0 &&
+            MENESIAI.includes(irasas.menuo) &&
+            MENESINIAI_NAUDOS_TIPAI.includes(irasas.naudosTipas) &&
+            typeof irasas.sutaupytaVandens === 'number' &&
+            Number.isFinite(irasas.sutaupytaVandens) &&
+            irasas.sutaupytaVandens >= 0 &&
+            typeof irasas.nauda === 'number' &&
+            Number.isFinite(irasas.nauda) &&
+            irasas.nauda >= 0,
+        )
+      : []
+
     return {
       aprasymas: typeof parsed.aprasymas === 'string' ? parsed.aprasymas : '',
-      sutaupytaVandens:
-        typeof parsed.sutaupytaVandens === 'number' &&
-        Number.isFinite(parsed.sutaupytaVandens)
-          ? parsed.sutaupytaVandens
-          : 0,
-      investicijosNauda:
-        typeof parsed.investicijosNauda === 'number' &&
-        Number.isFinite(parsed.investicijosNauda)
-          ? parsed.investicijosNauda
-          : 0,
+      menesiniaiIrasai,
     }
   } catch {
     return tusciaNauda
