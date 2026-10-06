@@ -92,6 +92,75 @@ export function parseSuma(reiksme) {
   return { ok: true, verte: skaicius }
 }
 
+export function validuotiMenesinesNaudosForma(forma) {
+  const klaidos = []
+  const metai = Number(forma.metai)
+  const sutaupytaVandens = parseSuma(forma.sutaupytaVandens)
+  const nauda = parseSuma(forma.nauda)
+
+  if (String(forma.metai).trim() === '' || !Number.isInteger(metai) || metai <= 0) {
+    klaidos.push('Įveskite tinkamus metus.')
+  }
+  if (!MENESIAI.includes(forma.menuo)) klaidos.push('Pasirinkite mėnesį.')
+  if (!MENESINIAI_NAUDOS_TIPAI.includes(forma.naudosTipas)) {
+    klaidos.push('Pasirinkite naudos tipą.')
+  }
+  if (!sutaupytaVandens.ok || sutaupytaVandens.verte < 0) {
+    klaidos.push('Vandens reikšmė turi būti skaičius, ne mažesnis už 0.')
+  }
+  if (!nauda.ok || nauda.verte < 0) {
+    klaidos.push('Nauda turi būti skaičius, ne mažesnis už 0.')
+  }
+
+  return {
+    klaidos,
+    irasas: {
+      metai,
+      menuo: forma.menuo,
+      naudosTipas: forma.naudosTipas,
+      sutaupytaVandens: sutaupytaVandens.ok ? sutaupytaVandens.verte : 0,
+      nauda: nauda.ok ? nauda.verte : 0,
+    },
+  }
+}
+
+export function arYraMenesinesNaudosDublikatas(irasai, irasas, ignoruojamoIrasaId = null) {
+  return irasai.some(
+    (esamas) =>
+      esamas.id !== ignoruojamoIrasaId &&
+      esamas.metai === irasas.metai &&
+      esamas.menuo === irasas.menuo &&
+      esamas.naudosTipas === irasas.naudosTipas,
+  )
+}
+
+export function skaiciuotiMenesineNauda(irasai) {
+  const menesiai = new Map()
+
+  irasai.forEach((irasas) => {
+    const menesioIndeksas = MENESIAI.indexOf(irasas.menuo)
+    const raktas = `${irasas.metai}-${menesioIndeksas}`
+    const esamas = menesiai.get(raktas)
+
+    if (esamas) {
+      esamas.nauda += irasas.nauda
+      esamas.sutaupytaVandens += irasas.sutaupytaVandens
+    } else {
+      menesiai.set(raktas, {
+        metai: irasas.metai,
+        menuo: irasas.menuo,
+        menesioIndeksas,
+        nauda: irasas.nauda,
+        sutaupytaVandens: irasas.sutaupytaVandens,
+      })
+    }
+  })
+
+  return [...menesiai.values()].sort(
+    (a, b) => a.metai - b.metai || a.menesioIndeksas - b.menesioIndeksas,
+  )
+}
+
 export function skaiciuotiBendraSuma(irasai) {
   return irasai.reduce((suma, irasas) => suma + irasas.suma, 0)
 }

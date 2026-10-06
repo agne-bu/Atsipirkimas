@@ -8,7 +8,7 @@
 
 - React 19, Vite 8, JavaScript ir paprastas CSS.
 - `src/App.jsx` yra pagrindinis komponentas: laiko investicijų, projekto naudos bei projekto būsenos React būseną ir per URL fragmentus `#investicijos` / `#projekto-nauda` parenka atskirą puslapio vaizdą.
-- `src/ProjektoNauda.jsx` rodo projekto naudos aprašymą, mėnesinės naudos formą, įrašų lentelę ir apskaičiuojamas vandens bei piniginės naudos korteles; stiliai yra `src/ProjektoNauda.css` faile.
+- `src/ProjektoNauda.jsx` rodo projekto naudos aprašymą, mėnesinės naudos formą, įrašų lentelę, mėnesinį finansinės naudos grafiką ir apskaičiuojamas vandens bei piniginės naudos korteles; stiliai yra `src/ProjektoNauda.css` faile.
 - `src/InvesticijaIsViso.jsx` rodo investicijų formą, įrašų lentelę, bendrą sumą ir mėnesinę diagramą.
 - `src/ProjektoVykdymoBusena.jsx` leidžia pasirinkti projekto būseną.
 - `src/investicijos.js` saugo mėnesių sąrašą, sumų formatavimo bei analizavimo funkcijas, investicijų tikrinimą ir `localStorage` operacijas.
@@ -21,7 +21,10 @@
 - Investicijų masyvas saugomas naršyklės `localStorage` raktu `atsipirkimas-investicijos`.
 - Projekto naudos objektas `{ aprasymas, menesiniaiIrasai }` saugomas `localStorage` raktu `atsipirkimas-projekto-nauda`; investicijų įrašų struktūra ir raktas nepakeisti.
 - Mėnesinės naudos įrašas yra `{ id, metai, menuo, naudosTipas, sutaupytaVandens, nauda }`. Vienam metų, mėnesio ir naudos tipo deriniui leidžiamas vienas įrašas. Vandens ir eurų reikšmės gali būti 0, bet ne neigiamos.
+- Esamus mėnesinės naudos įrašus galima redaguoti ir ištrinti. Redaguojant tikrinamas derinio unikalumas, o trynimui reikia naudotojo patvirtinimo. Dublikatų klaidos tekstas nurodo koreguoti esamą įrašą.
 - Vandens kortelė sumuoja `sutaupytaVandens`, o finansinė kortelė sumuoja `nauda` iš visų mėnesinių įrašų. Ištrynus įrašą, kortelės perskaičiuojamos.
+- Mėnesinis finansinės naudos grafikas sumuoja įrašus pagal metus ir mėnesį; kortelės, grafikas ir `localStorage` sinchronizuojami su įrašų pakeitimais.
+- Mėnesinės naudos verslo taisyklės tikrinamos su Node.js integruotais `node:test` testais (`npm test`).
 - Galimos būsenos: `Nepradėta`, `Vykdoma`, `Baigta`.
 - Be investicijų pradinė būsena yra `Nepradėta`. Pridėjus pirmą įrašą būsena automatiškai tampa `Vykdoma`.
 - Būseną `Baigta` galima pasirinkti tik esant bent vienam investicijų įrašui.

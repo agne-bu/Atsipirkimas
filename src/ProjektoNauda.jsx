@@ -2,8 +2,10 @@ import { useMemo, useState } from 'react'
 import {
   MENESIAI,
   MENESINIAI_NAUDOS_TIPAI,
+  arYraMenesinesNaudosDublikatas,
   formatuotiSkaiciu,
-  parseSuma,
+  skaiciuotiMenesineNauda,
+  validuotiMenesinesNaudosForma,
 } from './investicijos'
 import './ProjektoNauda.css'
 
@@ -22,39 +24,10 @@ function tusciaForma() {
   }
 }
 
-function validuotiForma(forma) {
-  const klaidos = []
-  const metai = Number(forma.metai)
-  const sutaupytaVandens = parseSuma(forma.sutaupytaVandens)
-  const nauda = parseSuma(forma.nauda)
-
-  if (forma.metai.trim() === '' || !Number.isInteger(metai) || metai <= 0) {
-    klaidos.push('Įveskite tinkamus metus.')
-  }
-  if (!forma.menuo) klaidos.push('Pasirinkite mėnesį.')
-  if (!MENESINIAI_NAUDOS_TIPAI.includes(forma.naudosTipas)) {
-    klaidos.push('Pasirinkite naudos tipą.')
-  }
-  if (!sutaupytaVandens.ok || sutaupytaVandens.verte < 0) {
-    klaidos.push('Vandens reikšmė turi būti skaičius, ne mažesnis už 0.')
-  }
-  if (!nauda.ok || nauda.verte < 0) {
-    klaidos.push('Nauda turi būti skaičius, ne mažesnis už 0.')
-  }
-
-  return {
-    klaidos,
-    irasas: {
-      metai,
-      sutaupytaVandens: sutaupytaVandens.ok ? sutaupytaVandens.verte : 0,
-      nauda: nauda.ok ? nauda.verte : 0,
-    },
-  }
-}
-
 function ProjektoNauda({ nauda, setNauda }) {
   const [forma, setForma] = useState(tusciaForma)
   const [klaidos, setKlaidos] = useState([])
+  const [redaguojamoIrasaId, setRedaguojamoIrasaId] = useState(null)
   const menesiniaiIrasai =
     nauda.menesiniaiIrasai || tusciasMenesiniuIrasuMasyvas
 
@@ -68,6 +41,14 @@ function ProjektoNauda({ nauda, setNauda }) {
         { sutaupytaVandens: 0, investicijosNauda: 0 },
       ),
     [menesiniaiIrasai],
+  )
+  const menesioDuomenys = useMemo(
+    () => skaiciuotiMenesineNauda(menesiniaiIrasai),
+    [menesiniaiIrasai],
+  )
+  const didziausiaMenesioNauda = Math.max(
+    0,
+    ...menesioDuomenys.map((irasas) => irasas.nauda),
   )
 
   function keistiAprasyma(event) {
@@ -83,19 +64,26 @@ function ProjektoNauda({ nauda, setNauda }) {
 
   function pridetiIrasa(event) {
     event.preventDefault()
-    const { klaidos: naujosKlaidos, irasas } = validuotiForma(forma)
+    const { klaidos: naujosKlaidos, irasas } =
+      validuotiMenesinesNaudosForma(forma)
 
-    if (naujosKlaidos.length === 0) {
-      const jauYraIrasa = menesiniaiIrasai.some(
-        (esamas) =>
-          esamas.metai === irasas.metai &&
-          esamas.menuo === forma.menuo &&
-          esamas.naudosTipas === forma.naudosTipas,
+    const keiciamasIrasa = {
+      ...irasas,
+      menuo: forma.menuo,
+      naudosTipas: forma.naudosTipas,
+    }
+
+    if (
+      naujosKlaidos.length === 0 &&
+      arYraMenesinesNaudosDublikatas(
+        menesiniaiIrasai,
+        keiciamasIrasa,
+        redaguojamoIrasaId,
       )
-
-      if (jauYraIrasa) {
-        naujosKlaidos.push('Šio mėnesio tokio tipo nauda jau įvesta.')
-      }
+    ) {
+      naujosKlaidos.push(
+        'Šio mėnesio ir naudos tipo įrašas jau yra. Jei reikia, pakoreguokite esamą įrašą.',
+      )
     }
 
     if (naujosKlaidos.length > 0) {
@@ -103,29 +91,57 @@ function ProjektoNauda({ nauda, setNauda }) {
       return
     }
 
-    setNauda((dabartine) => ({
-      ...dabartine,
-      menesiniaiIrasai: [
-        ...(dabartine.menesiniaiIrasai || []),
-        {
-          id: crypto.randomUUID(),
-          ...irasas,
-          menuo: forma.menuo,
-          naudosTipas: forma.naudosTipas,
-        },
-      ],
-    }))
+    setNauda((dabartine) => {
+      const esamiIrasai = dabartine.menesiniaiIrasai || []
+      const naujasIrasa = {
+        id: redaguojamoIrasaId || crypto.randomUUID(),
+          ...keiciamasIrasa,
+      }
+
+      return {
+        ...dabartine,
+        menesiniaiIrasai: redaguojamoIrasaId
+          ? esamiIrasai.map((esamas) =>
+              esamas.id === redaguojamoIrasaId ? naujasIrasa : esamas,
+            )
+          : [...esamiIrasai, naujasIrasa],
+      }
+    })
     setForma(tusciaForma())
+    setKlaidos([])
+    setRedaguojamoIrasaId(null)
+  }
+
+  function pradetiRedaguoti(irasas) {
+    setForma({
+      metai: String(irasas.metai),
+      menuo: irasas.menuo,
+      naudosTipas: irasas.naudosTipas,
+      sutaupytaVandens: String(irasas.sutaupytaVandens).replace('.', ','),
+      nauda: String(irasas.nauda).replace('.', ','),
+    })
+    setRedaguojamoIrasaId(irasas.id)
     setKlaidos([])
   }
 
   function istrintiIrasa(id) {
+    const arTrinti = window.confirm('Ar tikrai norite ištrinti šį įrašą?')
+    if (!arTrinti) return
+
     setNauda((dabartine) => ({
       ...dabartine,
       menesiniaiIrasai: (dabartine.menesiniaiIrasai || []).filter(
         (irasas) => irasas.id !== id,
       ),
     }))
+
+    if (redaguojamoIrasaId === id) atsauktiRedagavima()
+  }
+
+  function atsauktiRedagavima() {
+    setForma(tusciaForma())
+    setKlaidos([])
+    setRedaguojamoIrasaId(null)
   }
 
   return (
@@ -161,6 +177,62 @@ function ProjektoNauda({ nauda, setNauda }) {
           rows="3"
         />
       </div>
+
+      <section className="projekto-nauda-grafikas" aria-labelledby="projekto-nauda-grafikas-antraste">
+        <h2 id="projekto-nauda-grafikas-antraste">Mėnesinė finansinė nauda</h2>
+        {menesioDuomenys.length === 0 ? (
+          <p className="projekto-nauda-grafikas-tuscia">Grafikas atsiras pridėjus mėnesinės naudos įrašų.</p>
+        ) : (
+          <div className="projekto-nauda-grafikas-slinktis">
+            <svg
+              className="projekto-nauda-grafikas-svg"
+              viewBox={`0 0 ${Math.max(640, menesioDuomenys.length * 58 + 32)} 280`}
+              style={{ width: `${Math.max(640, menesioDuomenys.length * 58 + 32)}px` }}
+              role="img"
+              aria-label="Mėnesinė finansinė nauda pagal metus"
+            >
+              {[0, 1, 2, 3].map((eilute) => {
+                const y = 222 - eilute * 64
+                return (
+                  <line
+                    key={eilute}
+                    x1="32"
+                    x2={Math.max(624, menesioDuomenys.length * 58 + 16)}
+                    y1={y}
+                    y2={y}
+                    className="projekto-nauda-grafikas-tinklelis"
+                  />
+                )
+              })}
+              {menesioDuomenys.map((irasas, indeksas) => {
+                const aukstis = didziausiaMenesioNauda
+                  ? (irasas.nauda / didziausiaMenesioNauda) * 192
+                  : 0
+                const x = 42 + indeksas * 58
+                return (
+                  <g key={`${irasas.metai}-${irasas.menuo}`}>
+                    <title>{`${irasas.menuo} ${irasas.metai}: ${formatuotiSkaiciu(irasas.nauda)} Eur; sutaupyta vandens ${vandensFormatas.format(irasas.sutaupytaVandens)} m`}</title>
+                    <rect
+                      x={x}
+                      y={222 - aukstis}
+                      width="34"
+                      height={aukstis}
+                      rx="4"
+                      className="projekto-nauda-grafikas-stulpelis"
+                    />
+                    <text x={x + 17} y="244" textAnchor="middle" className="projekto-nauda-grafikas-menuo">
+                      {irasas.menuo.slice(0, 3)}
+                    </text>
+                    <text x={x + 17} y="261" textAnchor="middle" className="projekto-nauda-grafikas-metai">
+                      {irasas.metai}
+                    </text>
+                  </g>
+                )
+              })}
+            </svg>
+          </div>
+        )}
+      </section>
 
       <section className="projekto-nauda-menesiui" aria-labelledby="projekto-nauda-formos-antraste">
         <h2 id="projekto-nauda-formos-antraste">Mėnesinė nauda</h2>
@@ -216,7 +288,7 @@ function ProjektoNauda({ nauda, setNauda }) {
             />
           </div>
           <div className="projekto-nauda-laukas projekto-nauda-laukas--nauda">
-            <label htmlFor="projekto-nauda-eurai">Nauda, Eur</label>
+            <label htmlFor="projekto-nauda-eurai">Nauda (€)</label>
             <input
               id="projekto-nauda-eurai"
               type="text"
@@ -226,9 +298,22 @@ function ProjektoNauda({ nauda, setNauda }) {
               onChange={(event) => keistiLauka('nauda', event.target.value)}
             />
           </div>
-          <button className="projekto-nauda-prideti" type="submit" aria-label="Pridėti mėnesio naudą">
-            +
+          <button
+            className={`projekto-nauda-prideti${redaguojamoIrasaId ? ' projekto-nauda-prideti--redaguoti' : ''}`}
+            type="submit"
+            aria-label={redaguojamoIrasaId ? 'Išsaugoti pakeitimus' : 'Pridėti mėnesio naudą'}
+          >
+            {redaguojamoIrasaId ? 'Išsaugoti pakeitimus' : '+'}
           </button>
+          {redaguojamoIrasaId ? (
+            <button
+              className="projekto-nauda-atsaukti"
+              type="button"
+              onClick={atsauktiRedagavima}
+            >
+              Atšaukti
+            </button>
+          ) : null}
         </form>
 
         {klaidos.length > 0 ? (
@@ -246,8 +331,8 @@ function ProjektoNauda({ nauda, setNauda }) {
                   <th>Mėnuo</th>
                   <th>Naudos tipas</th>
                   <th>Sutaupyta vandens (m)</th>
-                  <th>Nauda, Eur</th>
-                  <th>Veiksmas</th>
+                  <th>Nauda (€)</th>
+                  <th>Veiksmai</th>
                 </tr>
               </thead>
               <tbody>
@@ -259,6 +344,14 @@ function ProjektoNauda({ nauda, setNauda }) {
                     <td>{vandensFormatas.format(irasas.sutaupytaVandens)}</td>
                     <td>{formatuotiSkaiciu(irasas.nauda)}</td>
                     <td>
+                      <button
+                        className="projekto-nauda-redaguoti"
+                        type="button"
+                        onClick={() => pradetiRedaguoti(irasas)}
+                      >
+                        Redaguoti
+                      </button>
+                      {' '}
                       <button
                         className="projekto-nauda-istrinti"
                         type="button"

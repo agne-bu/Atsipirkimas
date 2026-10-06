@@ -14,6 +14,9 @@ Investicijų žurnalas, sukurtas su React ir Vite. Leidžia suvesti investicijas
 - Projekto naudos aprašymas, išsaugomas naršyklėje
 - Mėnesinės naudos įrašai su metų, mėnesio, tipo, vandens ir piniginės naudos laukais
 - Naudos kortelės automatiškai sumuoja įrašų vandens rodiklį ir finansinę naudą
+- Mėnesinės naudos įrašų redagavimas, dublikatų prevencija ir patvirtinamas trynimas
+- Mėnesinis finansinės naudos grafikas
+- Naudos kortelių ir grafiko automatinis atnaujinimas pridėjus, redagavus ar ištrynus įrašą
 - Atskiri „Investicijos“ ir „Projekto nauda“ puslapio vaizdai, perjungiami navigacija
 - Projekto vykdymo būsena: `Nepradėta`, `Vykdoma`, `Baigta`
 - Duomenų išsaugojimas naršyklėje (`localStorage`)
@@ -52,6 +55,7 @@ Kitos komandos:
 | `npm run build` | Produkcinis build'as |
 | `npm run preview` | Build'o peržiūra |
 | `npm run lint` | Kodo patikra su ESLint |
+| `npm test` | Mėnesinės naudos taisyklių testai |
 
 ## Projekto struktūra
 
@@ -64,6 +68,7 @@ src/
 ├── InvesticijaIsViso.jsx       # Forma, lentelė, bendra suma ir mėnesinė diagrama
 ├── ProjektoVykdymoBusena.jsx   # Projekto būsenos pasirinkimas
 ├── investicijos.js             # Konstantos, formatavimas, localStorage
+├── tests/projektoNauda.test.js # Mėnesinės naudos validavimo ir grupavimo testai
 └── *.css                       # Komponentų stiliai
 ```
 
