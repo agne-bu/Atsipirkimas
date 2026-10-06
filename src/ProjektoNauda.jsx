@@ -160,7 +160,7 @@ function ProjektoNauda({ nauda, setNauda }) {
         <article className="projekto-nauda-kortele projekto-nauda-kortele--eurai">
           <h2>Investicijos nauda</h2>
           <p className="projekto-nauda-reiksme">
-            {formatuotiSkaiciu(rezultatai.investicijosNauda)} <span>Eur</span>
+            {formatuotiSkaiciu(rezultatai.investicijosNauda)} <span>€</span>
           </p>
         </article>
       </div>
@@ -179,7 +179,7 @@ function ProjektoNauda({ nauda, setNauda }) {
       </div>
 
       <section className="projekto-nauda-grafikas" aria-labelledby="projekto-nauda-grafikas-antraste">
-        <h2 id="projekto-nauda-grafikas-antraste">Mėnesinė finansinė nauda</h2>
+        <h2 id="projekto-nauda-grafikas-antraste">Nauda pagal mėnesius</h2>
         {menesioDuomenys.length === 0 ? (
           <p className="projekto-nauda-grafikas-tuscia">Grafikas atsiras pridėjus mėnesinės naudos įrašų.</p>
         ) : (
@@ -211,7 +211,7 @@ function ProjektoNauda({ nauda, setNauda }) {
                 const x = 42 + indeksas * 58
                 return (
                   <g key={`${irasas.metai}-${irasas.menuo}`}>
-                    <title>{`${irasas.menuo} ${irasas.metai}: ${formatuotiSkaiciu(irasas.nauda)} Eur; sutaupyta vandens ${vandensFormatas.format(irasas.sutaupytaVandens)} m`}</title>
+                    <title>{`${irasas.menuo} ${irasas.metai}: ${formatuotiSkaiciu(irasas.nauda)} €; sutaupyta vandens ${vandensFormatas.format(irasas.sutaupytaVandens)} m`}</title>
                     <rect
                       x={x}
                       y={222 - aukstis}
@@ -365,7 +365,9 @@ function ProjektoNauda({ nauda, setNauda }) {
               </tbody>
             </table>
           </div>
-        ) : null}
+        ) : (
+          <p className="projekto-nauda-grafikas-tuscia">Kol kas nėra įvestų mėnesinės naudos įrašų.</p>
+        )}
       </section>
     </section>
   )
